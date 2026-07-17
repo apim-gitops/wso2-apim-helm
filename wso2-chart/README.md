@@ -1,0 +1,414 @@
+# wso2am-all-in-one
+
+![Version: 4.7.0-2](https://img.shields.io/badge/Version-4.7.0--2-informational?style=flat-square) ![AppVersion: 4.7.0](https://img.shields.io/badge/AppVersion-4.7.0-informational?style=flat-square)
+
+A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
+
+## Values
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| aws.automountServiceAccountToken | bool | `true` | Whether to automatically mount the aws service account token to the pod |
+| aws.efs.accessPoints | object | `{"carbonDb":"","solr":""}` | EFS Access Points for static provisioning |
+| aws.efs.capacity | string | `""` | EFS capacity |
+| aws.efs.directoryPerms | string | `"0777"` | EFS directory permissions |
+| aws.efs.fileSystemId | string | `""` | EFS file system ID for mounting the persistent volume |
+| aws.enabled | bool | `false` | If AWS is used as the cloud provider |
+| aws.region | string | `""` | AWS region |
+| aws.secretsManager.secretIdentifiers.internalKeystorePassword | object | `{"secretKey":"","secretName":""}` | Internal keystore password identifier in secrets manager |
+| aws.secretsManager.secretIdentifiers.internalKeystorePassword.secretKey | string | `""` | AWS Secrets Manager secret key |
+| aws.secretsManager.secretIdentifiers.internalKeystorePassword.secretName | string | `""` | AWS Secrets Manager secret name |
+| aws.secretsManager.secretIdentifiers.secretEncryptionKey | object | `{"secretKey":"","secretName":""}` | Symmetric encryption key identifier in secrets manager |
+| aws.secretsManager.secretIdentifiers.secretEncryptionKey.secretKey | string | `""` | AWS Secrets Manager secret key |
+| aws.secretsManager.secretIdentifiers.secretEncryptionKey.secretName | string | `""` | AWS Secrets Manager secret name |
+| aws.secretsManager.secretProviderClass | string | `"wso2am-am-secret-provider-class"` | AWS Secrets Manager secret provider class name |
+| aws.serviceAccountName | string | `""` |  |
+| azure.automountServiceAccountToken | bool | `true` | Whether to automatically mount the azure service account token to the pod |
+| azure.enabled | bool | `false` | If Azure is used as the cloud provider |
+| azure.keyVault.activeDirectory.servicePrincipal | object | `{"appId":"","clientSecretName":"","credentialsSecretName":""}` | Service Principal created for transacting with the target Azure Key Vault For advanced details refer to official documentation (https://github.com/Azure/secrets-store-csi-driver-provider-azure/blob/master/docs/service-principal-mode.md) |
+| azure.keyVault.activeDirectory.servicePrincipal.appId | string | `""` | Application ID of the service principal used in secret-store-csi |
+| azure.keyVault.activeDirectory.servicePrincipal.clientSecretName | string | `""` | Client secret name of the service principal used in secret-store-csi |
+| azure.keyVault.activeDirectory.servicePrincipal.credentialsSecretName | string | `""` | Credentials secret name of the service principal used as nodePublisherRef |
+| azure.keyVault.activeDirectory.tenantId | string | `""` | Azure Active Directory tenant ID of the target Key Vault |
+| azure.keyVault.name | string | `""` | Azure Key vault used for credential management |
+| azure.keyVault.resourceManager.resourceGroup | string | `""` | Name of the Azure Resource Group to which the target Azure Key Vault belongs |
+| azure.keyVault.resourceManager.subscriptionId | string | `""` | Subscription ID of the target Azure Key Vault |
+| azure.keyVault.secretIdentifiers.internalKeystoreKeyPassword | string | `""` | Internal keystore key password identifier in keyvault |
+| azure.keyVault.secretIdentifiers.internalKeystorePassword | string | `""` | Internal keystore password identifier in keyvault |
+| azure.keyVault.secretIdentifiers.secretEncryptionKey | string | `""` | Symmetric encryption key identifier in keyvault |
+| azure.keyVault.secretProviderClass | string | `"wso2am-secret-provider-class"` | Azure Key vault secret provider class name |
+| azure.persistence.capacity | string | `""` | Persistent volume capacity |
+| azure.persistence.fileShare | string | `""` | Azure fileshare name |
+| azure.persistence.secretName | string | `""` | Azure file secret name |
+| azure.persistence.storageClass | string | `""` | Persistent volume storage class |
+| azure.serviceAccount | string | `"wso2am-all-in-one-svc-account"` |  |
+| azure.serviceAccountName | string | `""` | Name of the Azure Kubernetes service account |
+| gcp.automountServiceAccountToken | bool | `true` | Whether to automatically mount the gcp service account token to the pod |
+| gcp.enabled | bool | `false` | If GCP is used as the cloud provider |
+| gcp.fs | object | `{"capacity":"","fileshares":{"carbonDB":{"fileShareName":"","fileStoreName":"","ip":""},"solr":{"fileShareName":"","fileStoreName":"","ip":""}},"location":"","network":"","tier":""}` | File Store configuration parameters |
+| gcp.fs.capacity | string | `""` | Storage capacity of the file system (in GB or other appropriate units) |
+| gcp.fs.fileshares | object | `{"carbonDB":{"fileShareName":"","fileStoreName":"","ip":""},"solr":{"fileShareName":"","fileStoreName":"","ip":""}}` | FileStore configuration for specific services |
+| gcp.fs.fileshares.carbonDB | object | `{"fileShareName":"","fileStoreName":"","ip":""}` | FileShare configs for CarbonDB persistent storage |
+| gcp.fs.fileshares.carbonDB.fileShareName | string | `""` | FileShare of the CarbonDB persistent storage |
+| gcp.fs.fileshares.carbonDB.fileStoreName | string | `""` | FileStore of the CarbonDB persistent storage |
+| gcp.fs.fileshares.carbonDB.ip | string | `""` | IP of the CarbonDB persistent storage |
+| gcp.fs.fileshares.solr | object | `{"fileShareName":"","fileStoreName":"","ip":""}` | FileShare configs for Solr persistent storage |
+| gcp.fs.fileshares.solr.fileShareName | string | `""` | FileShare of the Solr persistent storage |
+| gcp.fs.fileshares.solr.fileStoreName | string | `""` | FileStore of the Solr persistent storage |
+| gcp.fs.fileshares.solr.ip | string | `""` | IP of the Solr persistent storage |
+| gcp.fs.location | string | `""` | Region of the FileStore |
+| gcp.fs.network | string | `""` | Network of the FileStore |
+| gcp.fs.tier | string | `""` | Tier of the FileStore |
+| gcp.secretsManager | object | `{"projectId":"","secret":{"secretName":"","secretVersion":""},"secretEncryptionKey":{"secretName":"","secretVersion":""},"secretProviderClass":""}` | Secrets Manager configuration parameters |
+| gcp.secretsManager.projectId | string | `""` | Project ID |
+| gcp.secretsManager.secret.secretName | string | `""` | Name of the secret |
+| gcp.secretsManager.secret.secretVersion | string | `""` | Version of the secret |
+| gcp.secretsManager.secretEncryptionKey | object | `{"secretName":"","secretVersion":""}` | Symmetric encryption key identifier in Secret Manager |
+| gcp.secretsManager.secretEncryptionKey.secretName | string | `""` | Name of the encryption key secret |
+| gcp.secretsManager.secretEncryptionKey.secretVersion | string | `""` | Version of the encryption key secret |
+| gcp.secretsManager.secretProviderClass | string | `""` | Secret provider class |
+| gcp.serviceAccountName | string | `""` | Service Account with access to read secrets |
+| kubernetes.configMaps | object | `{"scripts":{"defaultMode":"0407"}}` | Set UNIX permissions over the executable scripts |
+| kubernetes.extraVolumeMounts | list | `[]` | Mount extra volumes to the deployment pods, e.g to mount secrets extraVolumeMounts:   - name: my-secret     mountPath: /opt/wso2/secrets     readOnly: true |
+| kubernetes.extraVolumes | list | `[]` | Define the extra volumes to be mounted extraVolumes:   - name: my-secret     secret:       secretName: my-k8s-secret |
+| kubernetes.gatewayAPI | object | `{"backendTLSPolicy":{"caCertificateConfigMap":"","enabled":false,"hostname":""},"backendTrafficPolicy":{"cookie":{"name":"WSO2_CP_STICKY_SESSION","ttl":"0s"},"enabled":false},"defaultConfigMapCreation":false,"enabled":true,"gateway":{"annotations":{},"enabled":true,"filters":[],"hostname":"gw.wso2.com"},"gatewayName":"","management":{"annotations":{},"enabled":true,"filters":[],"hostname":"am.wso2.com"},"websocket":{"annotations":{},"enabled":true,"filters":[],"hostname":"websocket.wso2.com"},"websub":{"annotations":{},"enabled":true,"filters":[],"hostname":"websub.wso2.com"}}` | Kubernetes Gateway API configurations (alternative to Ingress) Requires Gateway API CRDs to be installed in the cluster The Gateway resource must be created externally before deploying this chart See resources/assets/sample-gateway.yaml for an example Gateway manifest |
+| kubernetes.gatewayAPI.backendTLSPolicy | object | `{"caCertificateConfigMap":"","enabled":false,"hostname":""}` | Backend TLS Policy for HTTPS backend connections |
+| kubernetes.gatewayAPI.backendTLSPolicy.caCertificateConfigMap | string | `""` | CA certificate ConfigMap name for backend TLS verification |
+| kubernetes.gatewayAPI.backendTLSPolicy.enabled | bool | `false` | Enable BackendTLSPolicy |
+| kubernetes.gatewayAPI.backendTLSPolicy.hostname | string | `""` | Backend hostname for TLS verification |
+| kubernetes.gatewayAPI.backendTrafficPolicy.cookie.name | string | `"WSO2_CP_STICKY_SESSION"` | Cookie name used for sticky sessions |
+| kubernetes.gatewayAPI.backendTrafficPolicy.cookie.ttl | string | `"0s"` | Cookie TTL. Use "0s" for a session cookie (expires when browser closes) |
+| kubernetes.gatewayAPI.backendTrafficPolicy.enabled | bool | `false` | Enable BackendTrafficPolicy |
+| kubernetes.gatewayAPI.defaultConfigMapCreation | bool | `false` | Create CA certificate ConfigMap for BackendTLSPolicy |
+| kubernetes.gatewayAPI.enabled | bool | `true` | Enable Gateway API resources (HTTPRoutes and policies) |
+| kubernetes.gatewayAPI.gateway.annotations | object | `{}` | HTTPRoute annotations |
+| kubernetes.gatewayAPI.gateway.enabled | bool | `true` | Enable HTTPRoute for Gateway pass-through |
+| kubernetes.gatewayAPI.gateway.filters | list | `[]` | HTTPRoute filters (optional) |
+| kubernetes.gatewayAPI.gateway.hostname | string | `"gw.wso2.com"` | Hostname for Gateway pass-through |
+| kubernetes.gatewayAPI.gatewayName | string | `""` | Name of the externally-created Gateway resource that HTTPRoutes will reference (e.g., istio, nginx, contour, envoy-gateway, gke-l7-global-external-managed) This Gateway must exist in the same namespace before installing the chart |
+| kubernetes.gatewayAPI.management.annotations | object | `{}` | HTTPRoute annotations |
+| kubernetes.gatewayAPI.management.enabled | bool | `true` | Enable HTTPRoute for Management Console, Publisher, DevPortal and Admin Portal |
+| kubernetes.gatewayAPI.management.hostname | string | `"am.wso2.com"` | Hostname for API Manager Management interfaces |
+| kubernetes.gatewayAPI.websocket.annotations | object | `{}` | HTTPRoute annotations |
+| kubernetes.gatewayAPI.websocket.enabled | bool | `true` | Enable HTTPRoute for Websocket |
+| kubernetes.gatewayAPI.websocket.filters | list | `[]` | HTTPRoute filters (optional) |
+| kubernetes.gatewayAPI.websocket.hostname | string | `"websocket.wso2.com"` | Hostname for Websocket |
+| kubernetes.gatewayAPI.websub.annotations | object | `{}` | HTTPRoute annotations |
+| kubernetes.gatewayAPI.websub.enabled | bool | `true` | Enable HTTPRoute for Websub |
+| kubernetes.gatewayAPI.websub.filters | list | `[]` | HTTPRoute filters (optional) |
+| kubernetes.gatewayAPI.websub.hostname | string | `"websub.wso2.com"` | Hostname for Websub |
+| kubernetes.ingress.gateway.annotations | object | `{"nginx.ingress.kubernetes.io/backend-protocol":"HTTPS","nginx.ingress.kubernetes.io/proxy-buffer-size":"8k","nginx.ingress.kubernetes.io/proxy-buffering":"on"}` | Ingress annotations for Gateway pass-through |
+| kubernetes.ingress.gateway.enabled | bool | `false` |  |
+| kubernetes.ingress.gateway.hostname | string | `"gw.wso2.com"` | Ingress hostname for Gateway pass-through |
+| kubernetes.ingress.management.annotations."nginx.ingress.kubernetes.io/affinity" | string | `"cookie"` |  |
+| kubernetes.ingress.management.annotations."nginx.ingress.kubernetes.io/backend-protocol" | string | `"HTTPS"` |  |
+| kubernetes.ingress.management.annotations."nginx.ingress.kubernetes.io/session-cookie-hash" | string | `"sha1"` |  |
+| kubernetes.ingress.management.annotations."nginx.ingress.kubernetes.io/session-cookie-name" | string | `"route"` |  |
+| kubernetes.ingress.management.enabled | bool | `false` |  |
+| kubernetes.ingress.management.hostname | string | `"am.wso2.com"` |  |
+| kubernetes.ingress.ratelimit.burstLimit | string | `""` | Ingress ratelimit burst limit |
+| kubernetes.ingress.ratelimit.enabled | bool | `false` | Ingress rate limit |
+| kubernetes.ingress.ratelimit.zoneName | string | `""` | Ingress ratelimit zone name |
+| kubernetes.ingress.tlsSecret | string | `""` | Kubernetes secret created for Ingress TLS |
+| kubernetes.ingress.websocket.annotations | string | `nil` | Ingress annotations for Websocket |
+| kubernetes.ingress.websocket.enabled | bool | `false` |  |
+| kubernetes.ingress.websocket.hostname | string | `"websocket.wso2.com"` | Ingress hostname for Websocket |
+| kubernetes.ingress.websub.annotations | string | `nil` | Ingress annotations for Websub |
+| kubernetes.ingress.websub.enabled | bool | `false` |  |
+| kubernetes.ingress.websub.hostname | string | `"websub.wso2.com"` | Ingress hostname for Websub |
+| kubernetes.ingressClass | string | `"nginx"` | Ingress class to be used for the ingress resource |
+| kubernetes.openshift | object | `{"enabled":false}` | When deploying on OpenShift. |
+| kubernetes.route | object | `{"gateway":{"annotations":null,"enabled":false,"hostname":"gw.wso2.com"},"management":{"annotations":null,"enabled":false,"hostname":"am.wso2.com"},"tls":{"certificate":"","destinationCACertificate":"","insecureEdgeTerminationPolicy":"None","key":"","termination":"passthrough"},"websocket":{"annotations":null,"enabled":false,"hostname":"websocket.wso2.com"},"websub":{"annotations":null,"enabled":false,"hostname":"websub.wso2.com"}}` | OpenShift Route configurations |
+| kubernetes.route.gateway.annotations | string | `nil` | Route annotations for Gateway pass-through |
+| kubernetes.route.gateway.hostname | string | `"gw.wso2.com"` | Route hostname for Gateway pass-through |
+| kubernetes.route.management.annotations | string | `nil` | Annotations for the API Manager Publisher-DevPortal services Route |
+| kubernetes.route.management.hostname | string | `"am.wso2.com"` | Hostname for API Manager Carbon Management Console, Publisher, DevPortal and Admin Portal |
+| kubernetes.route.tls | object | `{"certificate":"","destinationCACertificate":"","insecureEdgeTerminationPolicy":"None","key":"","termination":"passthrough"}` | TLS configuration for OpenShift routes |
+| kubernetes.route.tls.certificate | string | `""` | TLS certificate for edge/reencrypt termination |
+| kubernetes.route.tls.destinationCACertificate | string | `""` | Destination CA certificate for reencrypt termination |
+| kubernetes.route.tls.insecureEdgeTerminationPolicy | string | `"None"` | Insecure Edge Termination Policy |
+| kubernetes.route.tls.key | string | `""` | TLS private key for edge/reencrypt termination |
+| kubernetes.route.tls.termination | string | `"passthrough"` | TLS termination type (passthrough, edge, reencrypt) |
+| kubernetes.route.websocket.annotations | string | `nil` | Route annotations for Websocket |
+| kubernetes.route.websocket.enabled | bool | `false` | Enable Route for Websocket |
+| kubernetes.route.websocket.hostname | string | `"websocket.wso2.com"` | Route hostname for Websocket |
+| kubernetes.route.websub.annotations | string | `nil` | Route annotations for Websub |
+| kubernetes.route.websub.enabled | bool | `false` | Enable Websub route |
+| kubernetes.route.websub.hostname | string | `"websub.wso2.com"` | Route hostname for Websub |
+| kubernetes.securityContext.runAsGroup | int | `10001` |  |
+| kubernetes.securityContext.runAsUser | int | `10001` | User ID of the container |
+| kubernetes.securityContext.seLinux | object | `{"enabled":false,"level":""}` | SELinux context for the container |
+| kubernetes.securityContext.seccompProfile | object | `{"localhostProfile":"","type":"RuntimeDefault"}` | Seccomp profile for the container |
+| kubernetes.securityContext.seccompProfile.type | string | `"RuntimeDefault"` | Seccomp profile type(RuntimeDefault, Unconfined or Localhost) |
+| wso2.ELKAnalytics | object | `{"enabled":false}` | ELK Analytics Parameters |
+| wso2.apim.configurations.adminPassword | string | `"admin"` | Super admin password |
+| wso2.apim.configurations.adminUsername | string | `"admin"` | Super admin username |
+| wso2.apim.configurations.ai | object | `{"embeddingProvider":{"properties":{"apikey":"","authType":"","azureUmiScope":"","embeddingEndpoint":"","embeddingModel":""},"type":""},"enabled":false,"endpoint":"","key":"","token":"","tokenEndpoint":"","vectorDbProvider":{"properties":{"token":"","uri":""},"type":""}}` | APIM AI related configurations |
+| wso2.apim.configurations.cache.gateway_token.enabled | bool | `true` | Gateway token cache enabled |
+| wso2.apim.configurations.cache.gateway_token.expiryTime | string | `"15m"` | Gateway token cache expiration time |
+| wso2.apim.configurations.cache.jwt_claim.enabled | bool | `true` | Gateway JWT claim cache enabled |
+| wso2.apim.configurations.cache.jwt_claim.expiryTime | string | `"15m"` | Gateway JWT claim cache expiration time |
+| wso2.apim.configurations.cache.km_token.enabled | bool | `true` | Gateway KM token cache enabled |
+| wso2.apim.configurations.cache.km_token.expiryTime | string | `"15m"` | Gateway KM token cache expiration time |
+| wso2.apim.configurations.cache.publisher_roles.enabled | bool | `false` |  |
+| wso2.apim.configurations.cache.recent_apis.enabled | bool | `false` | Gateway recent APIs cache enabled |
+| wso2.apim.configurations.cache.resource.enabled | bool | `true` | Gateway resource cache enabled |
+| wso2.apim.configurations.cache.resource.expiryTime | string | `"900s"` | Gateway resource cache expiration time |
+| wso2.apim.configurations.cache.scopes.enabled | bool | `false` |  |
+| wso2.apim.configurations.cache.tags.enabled | bool | `true` | Gateway tags cache enabled |
+| wso2.apim.configurations.cache.tags.expiryTime | string | `"2m"` |  |
+| wso2.apim.configurations.cors.allowCredentials | bool | `false` | CORS Access-Control-Allow-Credentials |
+| wso2.apim.configurations.cors.allowHeaders | list | `["authorization","Access-Control-Allow-Origin","Content-Type","SOAPAction","apikey","Internal-Key"]` | CORS Access-Control-Allow-Headers |
+| wso2.apim.configurations.cors.allowMethods | list | `["GET","PUT","POST","DELETE","PATCH","OPTIONS"]` | CORS Access-Control-Allow-Methods |
+| wso2.apim.configurations.cors.allowOrigins | list | `["*"]` | CORS Access-Control-Allow-Origin |
+| wso2.apim.configurations.cors.enableForWS | bool | `false` | Enable CORS for Websockets |
+| wso2.apim.configurations.cors.enabled | bool | `true` | CORS configuration enabled |
+| wso2.apim.configurations.databases.apim_db | object | `{"password":"","poolParameters":{"defaultAutoCommit":true,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000},"url":"","username":""}` | APIM APIMDB configurations. This is required for gateway only in a multi-tenancy scenario |
+| wso2.apim.configurations.databases.apim_db.password | string | `""` | APIM APIMDB password |
+| wso2.apim.configurations.databases.apim_db.poolParameters | object | `{"defaultAutoCommit":true,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000}` | APIM database JDBC pool parameters |
+| wso2.apim.configurations.databases.apim_db.url | string | `""` | APIM APIMDB URL |
+| wso2.apim.configurations.databases.apim_db.username | string | `""` | APIM APIMDB username |
+| wso2.apim.configurations.databases.jdbc.driver | string | `""` | JDBC driver class name |
+| wso2.apim.configurations.databases.shared_db.password | string | `""` | APIM SharedDB password |
+| wso2.apim.configurations.databases.shared_db.poolParameters | object | `{"defaultAutoCommit":true,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000}` | APIM database JDBC pool parameters |
+| wso2.apim.configurations.databases.shared_db.url | string | `""` | APIM SharedDB URL |
+| wso2.apim.configurations.databases.shared_db.username | string | `""` | APIM SharedDB username |
+| wso2.apim.configurations.databases.type | string | `""` | Database type. eg: mysql, oracle, mssql, postgres |
+| wso2.apim.configurations.devportal.applicationSharingImpl | string | `nil` |  |
+| wso2.apim.configurations.devportal.applicationSharingType | string | `nil` |  |
+| wso2.apim.configurations.devportal.create_default_application | string | `nil` | Whether to create default application |
+| wso2.apim.configurations.devportal.defaultReservedUsername | string | `nil` |  |
+| wso2.apim.configurations.devportal.displayDeprecatedApis | string | `nil` | Whether to display deprecated APIs |
+| wso2.apim.configurations.devportal.displayMultipleVersions | string | `nil` | Whether to display multiple versions of same API or only showing the latest version of an API |
+| wso2.apim.configurations.devportal.enableAnonymousMode | string | `nil` | Whether anonymous mode is enabled |
+| wso2.apim.configurations.devportal.enableApplicationSharing | string | `nil` |  |
+| wso2.apim.configurations.devportal.enableComments | string | `nil` | Whether to display comments for API |
+| wso2.apim.configurations.devportal.enableCrossTenantSubscriptions | string | `nil` |  |
+| wso2.apim.configurations.devportal.enableForum | string | `nil` | Whether to display forum for API |
+| wso2.apim.configurations.devportal.enableKeyProvisioning | string | `nil` |  |
+| wso2.apim.configurations.devportal.enableLegacyApiKeys | bool | `false` |  |
+| wso2.apim.configurations.devportal.enableRatings | string | `nil` | Whether to display ratings for API |
+| wso2.apim.configurations.devportal.loginUsernameCaseInsensitive | string | `nil` |  |
+| wso2.apim.configurations.devportal.mode | string | `"HYBRID"` |  |
+| wso2.apim.configurations.encryption.cipherTransformation | string | `"AES/GCM/NoPadding"` | Symmetric cipher transformation. AES/GCM/NoPadding is used as the symmetric cipher transformation. |
+| wso2.apim.configurations.encryption.internalCryptoProvider | string | `"org.wso2.carbon.crypto.provider.SymmetricKeyInternalCryptoProvider"` | Internal crypto provider implementation used for symmetric encryption. |
+| wso2.apim.configurations.encryption.key | string | `""` | Symmetric encryption key shared by all nodes. This must be set explicitly and must be the same across all nodes before first startup. |
+| wso2.apim.configurations.eventHandlers[0].name | string | `"userPostSelfRegistration"` |  |
+| wso2.apim.configurations.eventHandlers[0].subscriptions[0] | string | `"POST_ADD_USER"` |  |
+| wso2.apim.configurations.eventListeners[0].id | string | `"token_revocation"` |  |
+| wso2.apim.configurations.eventListeners[0].name | string | `"org.wso2.is.notification.ApimOauthEventInterceptor"` |  |
+| wso2.apim.configurations.eventListeners[0].order | int | `1` |  |
+| wso2.apim.configurations.eventListeners[0].properties.notificationEndpoint | string | `"https://localhost:${mgt.transport.https.port}/internal/data/v1/notify"` |  |
+| wso2.apim.configurations.eventListeners[0].type | string | `"org.wso2.carbon.identity.core.handler.AbstractIdentityHandler"` |  |
+| wso2.apim.configurations.existingSecret | object | `{"adminPasswordKey":"","apimDBPasswordKey":"","encryptionKeyKey":"","secretName":"","sharedDBPasswordKey":""}` | Read passwords from a common secret |
+| wso2.apim.configurations.extraConfigs | string | `nil` | Add custom configurations to deployment.toml. |
+| wso2.apim.configurations.gateway.environments | list | `[{"description":"This is a hybrid gateway that handles both production and sandbox token traffic.","displayInApiConsole":true,"gatewayType":"Regular","httpHostname":"gw.wso2.com","name":"Default","provider":"wso2","serviceName":"wso2am-gateway-service","servicePort":9443,"showAsTokenEndpointUrl":true,"type":"hybrid","visibility":null,"websubHostname":"websub.wso2.com","wsHostname":"websocket.wso2.com"}]` | APIM Gateway environments |
+| wso2.apim.configurations.gatewayNotification.cleanUp.dataRetentionPeriod | string | `"30d"` |  |
+| wso2.apim.configurations.gatewayNotification.cleanUp.expiryTime | string | `"2m"` |  |
+| wso2.apim.configurations.gatewayNotification.deploymentAck.batchInterval | string | `"2s"` |  |
+| wso2.apim.configurations.gatewayNotification.deploymentAck.batchProcessorKeepAlive | string | `"1m"` |  |
+| wso2.apim.configurations.gatewayNotification.deploymentAck.batchProcessorMaxThread | int | `8` |  |
+| wso2.apim.configurations.gatewayNotification.deploymentAck.batchProcessorMinThread | int | `2` |  |
+| wso2.apim.configurations.gatewayNotification.deploymentAck.batchProcessorQueueSize | int | `50` |  |
+| wso2.apim.configurations.gatewayNotification.deploymentAck.batchSize | int | `100` |  |
+| wso2.apim.configurations.gatewayNotification.deploymentAck.maxRetryCount | int | `5` |  |
+| wso2.apim.configurations.gatewayNotification.deploymentAck.retryDuration | string | `"10s"` |  |
+| wso2.apim.configurations.gatewayNotification.deploymentAck.retryProgressionFactor | int | `2` |  |
+| wso2.apim.configurations.gatewayNotification.enabled | bool | `true` |  |
+| wso2.apim.configurations.gatewayNotification.gatewayId | string | `""` |  |
+| wso2.apim.configurations.gatewayNotification.heartbeat.notifyInterval | string | `"1m"` |  |
+| wso2.apim.configurations.gatewayNotification.registration.maxRetryCount | int | `5` |  |
+| wso2.apim.configurations.gatewayNotification.registration.retryDuration | string | `"10s"` |  |
+| wso2.apim.configurations.gatewayNotification.registration.retryProgressionFactor | int | `2` |  |
+| wso2.apim.configurations.gatewayType | string | `"Regular,APK,AWS,Azure,Kong"` |  |
+| wso2.apim.configurations.governance.scheduler | object | `{"queue_size":"","task_check_interval_minutes":"","task_cleanup_interval_minutes":"","thread_pool_size":""}` | Override the default values of governance.scheduler if any value exists |
+| wso2.apim.configurations.iskm.enabled | bool | `false` |  |
+| wso2.apim.configurations.iskm.revokeURL | string | `""` |  |
+| wso2.apim.configurations.iskm.serviceName | string | `""` |  |
+| wso2.apim.configurations.jwt.claimDialect | string | `"http://wso2.org/claims"` |  |
+| wso2.apim.configurations.jwt.claimsExtractorImpl | string | `"org.wso2.carbon.apimgt.impl.token.DefaultClaimsRetriever"` |  |
+| wso2.apim.configurations.jwt.enableUserClaims | string | `"false"` |  |
+| wso2.apim.configurations.jwt.enabled | bool | `false` |  |
+| wso2.apim.configurations.jwt.encoding | string | `"base64"` |  |
+| wso2.apim.configurations.jwt.generatorImpl | string | `"org.wso2.carbon.apimgt.keymgt.token.JWTGenerator"` |  |
+| wso2.apim.configurations.jwt.header | string | `"X-JWT-Assertion"` |  |
+| wso2.apim.configurations.jwt.signingAlgorithm | string | `"SHA256withRSA"` |  |
+| wso2.apim.configurations.keyManager.allowSubscriptionValidationDisabling | bool | `true` |  |
+| wso2.apim.configurations.keyManager.enableLightweightAPIKeyGeneration | bool | `true` |  |
+| wso2.apim.configurations.keyManager.skipCreateResidentKeyManager | bool | `false` |  |
+| wso2.apim.configurations.mcp | object | `{"enabled":true}` | APIM MCP related configurations |
+| wso2.apim.configurations.notification.enableAuthentication | bool | `false` |  |
+| wso2.apim.configurations.notification.enableStartTls | bool | `false` |  |
+| wso2.apim.configurations.notification.fromAddress | string | `nil` |  |
+| wso2.apim.configurations.notification.hostname | string | `nil` |  |
+| wso2.apim.configurations.notification.password | string | `nil` |  |
+| wso2.apim.configurations.notification.port | int | `25` |  |
+| wso2.apim.configurations.notification.signature | string | `nil` |  |
+| wso2.apim.configurations.notification.username | string | `nil` |  |
+| wso2.apim.configurations.oauth_config.authHeader | string | `"Authorization"` | OAuth authorization header name |
+| wso2.apim.configurations.oauth_config.enableOutboundAuthHeader | bool | `false` | Preserves auth header in outgoing requests |
+| wso2.apim.configurations.oauth_config.enableTokenEncryption | bool | `false` | Enable token encryption |
+| wso2.apim.configurations.oauth_config.enableTokenHashing | bool | `false` | Enable token hashing |
+| wso2.apim.configurations.oauth_config.multipleClientSecrets | object | `{"enable":true,"secretCount":""}` | Multiple client secrets configuration |
+| wso2.apim.configurations.oauth_config.multipleClientSecrets.enable | bool | `true` | Enable multiple client secrets for OAuth applications |
+| wso2.apim.configurations.oauth_config.multipleClientSecrets.secretCount | string | `""` | Maximum number of secrets allowed per application (optional, leave empty for unlimited) |
+| wso2.apim.configurations.oauth_config.oauth2JWKSUrl | string | `""` |  |
+| wso2.apim.configurations.oauth_config.revokeEndpoint | string | `""` | OAuth revoke endpoint |
+| wso2.apim.configurations.oauth_config.tokenPersistenceOptimization | bool | `true` | Enable OAuth token persistence optimization. When enabled, JWT extension is used. When disabled, token persistence and revoked token headers configuration is used. |
+| wso2.apim.configurations.openTelemetry.enabled | bool | `false` | Open Telemetry enabled |
+| wso2.apim.configurations.openTelemetry.hostname | string | `""` | Remote tracer hostname |
+| wso2.apim.configurations.openTelemetry.name | string | `""` | Remote tracer name. e.g. jaeger, zipkin, OTLP |
+| wso2.apim.configurations.openTelemetry.port | string | `""` | Remote tracer port |
+| wso2.apim.configurations.openTracer.enabled | bool | `false` | Open Tracing enabled |
+| wso2.apim.configurations.openTracer.name | string | `""` | Remote tracer name. e.g. jaeger, zipkin |
+| wso2.apim.configurations.openTracer.properties.hostname | string | `""` | Remote tracer hostname |
+| wso2.apim.configurations.openTracer.properties.port | string | `""` | Remote tracer port |
+| wso2.apim.configurations.organization_based_access_control.enabled | bool | `true` |  |
+| wso2.apim.configurations.organization_based_access_control.organization_id_local_claim | string | `"http://wso2.org/claims/organizationId"` |  |
+| wso2.apim.configurations.organization_based_access_control.organization_name_local_claim | string | `"http://wso2.org/claims/organization"` |  |
+| wso2.apim.configurations.publisher.enableApiDocVisibility | bool | `false` | Supported document types in Publisher. This should be used only if there are additional document types to be supported. |
+| wso2.apim.configurations.publisher.enablePortalConfigurationOnlyMode | bool | `false` |  |
+| wso2.apim.configurations.publisher.internalKeyIssuer | string | `""` |  |
+| wso2.apim.configurations.publisher.supportedDocumentTypes | string | `""` |  |
+| wso2.apim.configurations.sdk.supportedLanguages[0] | string | `"android"` |  |
+| wso2.apim.configurations.sdk.supportedLanguages[10] | string | `"ruby"` |  |
+| wso2.apim.configurations.sdk.supportedLanguages[11] | string | `"swift5"` |  |
+| wso2.apim.configurations.sdk.supportedLanguages[12] | string | `"clojure"` |  |
+| wso2.apim.configurations.sdk.supportedLanguages[1] | string | `"java"` |  |
+| wso2.apim.configurations.sdk.supportedLanguages[2] | string | `"csharp"` |  |
+| wso2.apim.configurations.sdk.supportedLanguages[3] | string | `"dart"` |  |
+| wso2.apim.configurations.sdk.supportedLanguages[4] | string | `"groovy"` |  |
+| wso2.apim.configurations.sdk.supportedLanguages[5] | string | `"javascript"` |  |
+| wso2.apim.configurations.sdk.supportedLanguages[6] | string | `"jmeter"` |  |
+| wso2.apim.configurations.sdk.supportedLanguages[7] | string | `"perl"` |  |
+| wso2.apim.configurations.sdk.supportedLanguages[8] | string | `"php"` |  |
+| wso2.apim.configurations.sdk.supportedLanguages[9] | string | `"python"` |  |
+| wso2.apim.configurations.security.jksExistingSecret | object | `{"internalKeystoreKeyPasswordKey":"","internalKeystorePasswordKey":"","primaryKeystoreKeyPasswordKey":"","primaryKeystorePasswordKey":"","secretName":"","tlsKeystoreKeyPasswordKey":"","tlsKeystorePasswordKey":"","truststorePasswordKey":""}` | Existing secret containing the passwords for the keystores |
+| wso2.apim.configurations.security.jksSecretName | string | `""` | Kubernetes secret containing the keystores and truststore |
+| wso2.apim.configurations.security.keystores.internal.alias | string | `"wso2carbon"` | Internal keystore alias |
+| wso2.apim.configurations.security.keystores.internal.enabled | bool | `false` | Internal keystore enabled |
+| wso2.apim.configurations.security.keystores.internal.keyPassword | string | `""` | Internal keystore key password |
+| wso2.apim.configurations.security.keystores.internal.name | string | `"wso2carbon.jks"` | Internal keystore name |
+| wso2.apim.configurations.security.keystores.internal.password | string | `""` | Internal keystore password |
+| wso2.apim.configurations.security.keystores.primary.alias | string | `"wso2carbon"` | Primary keystore alias |
+| wso2.apim.configurations.security.keystores.primary.enabled | bool | `false` | Primary keystore enabled |
+| wso2.apim.configurations.security.keystores.primary.keyPassword | string | `""` | Primary keystore key password |
+| wso2.apim.configurations.security.keystores.primary.name | string | `"wso2carbon.jks"` | Primary keystore name |
+| wso2.apim.configurations.security.keystores.primary.password | string | `""` | Primary keystore password |
+| wso2.apim.configurations.security.keystores.tls.alias | string | `"wso2carbon"` | TLS keystore alias |
+| wso2.apim.configurations.security.keystores.tls.enabled | bool | `true` | TLS keystore enabled |
+| wso2.apim.configurations.security.keystores.tls.keyPassword | string | `"wso2carbon"` | TLS keystore key password |
+| wso2.apim.configurations.security.keystores.tls.name | string | `"wso2carbon.jks"` | TLS keystore name |
+| wso2.apim.configurations.security.keystores.tls.password | string | `"wso2carbon"` | TLS keystore password |
+| wso2.apim.configurations.security.truststore.name | string | `"client-truststore.jks"` | Truststore name |
+| wso2.apim.configurations.security.truststore.password | string | `""` | Truststore password |
+| wso2.apim.configurations.serviceProvider.spNameRegex | string | `"^[\\sa-zA-Z0-9._-]*$"` |  |
+| wso2.apim.configurations.syncRuntimeArtifacts.gateway.labels | list | `["Default"]` | Gateway label used to filter out artifact retrieval |
+| wso2.apim.configurations.syncRuntimeArtifacts.tenantLoading.enabled | bool | `false` | Enable tenant loading in the gateway for artifacts |
+| wso2.apim.configurations.syncRuntimeArtifacts.tenantLoading.tenants | string | `"*"` | Tenants to be loaded in the gateway for artifacts. |
+| wso2.apim.configurations.tenantSharing.enabled | bool | `false` |  |
+| wso2.apim.configurations.tenantSharing.properties.autoConfigureKeyManager | bool | `true` |  |
+| wso2.apim.configurations.tenantSharing.properties.enableTenantSync | bool | `true` |  |
+| wso2.apim.configurations.tenantSharing.properties.identityServerBaseUrl | string | `""` |  |
+| wso2.apim.configurations.tenantSharing.properties.password | string | `""` |  |
+| wso2.apim.configurations.tenantSharing.properties.username | string | `""` |  |
+| wso2.apim.configurations.tenantSharing.type | string | `""` |  |
+| wso2.apim.configurations.throttling.blacklistCondition.period | string | `nil` |  |
+| wso2.apim.configurations.throttling.blacklistCondition.startDelay | string | `nil` |  |
+| wso2.apim.configurations.throttling.enableBlacklistCondition | bool | `true` |  |
+| wso2.apim.configurations.throttling.enableDataPublishing | bool | `true` |  |
+| wso2.apim.configurations.throttling.enableHeaderBasedThrottling | bool | `false` |  |
+| wso2.apim.configurations.throttling.enableJwtClaimBasedThrottling | bool | `false` |  |
+| wso2.apim.configurations.throttling.enablePersistence | bool | `true` |  |
+| wso2.apim.configurations.throttling.enablePolicyDeploy | bool | `true` |  |
+| wso2.apim.configurations.throttling.enableQueryParamBasedThrottling | bool | `false` |  |
+| wso2.apim.configurations.throttling.enableUnlimitedTier | bool | `true` |  |
+| wso2.apim.configurations.throttling.eventManagement.hostname | string | `nil` |  |
+| wso2.apim.configurations.throttling.eventManagement.port | string | `nil` |  |
+| wso2.apim.configurations.throttling.eventSync.hostname | string | `nil` |  |
+| wso2.apim.configurations.throttling.eventSync.port | string | `nil` |  |
+| wso2.apim.configurations.throttling.jms.startDelay | string | `nil` |  |
+| wso2.apim.configurations.throttling.portOffset | int | `0` |  |
+| wso2.apim.configurations.throttling.throttleDecisionEndpoints | list | `[]` |  |
+| wso2.apim.configurations.token.revocation.EnablePersistentNotifier | bool | `true` |  |
+| wso2.apim.configurations.token.revocation.EnableRealtimeNotifier | bool | `true` |  |
+| wso2.apim.configurations.token.revocation.NotifierImpl | string | `"org.wso2.carbon.apimgt.keymgt.events.TokenRevocationNotifierImpl"` |  |
+| wso2.apim.configurations.token.revocation.PersistentNotifierHostname | string | `"https://localhost:2379/v2/keys/jti/"` |  |
+| wso2.apim.configurations.token.revocation.PersistentNotifierPassword | string | `"root"` |  |
+| wso2.apim.configurations.token.revocation.PersistentNotifierTtl | int | `5000` |  |
+| wso2.apim.configurations.token.revocation.PersistentNotifierUsername | string | `"root"` |  |
+| wso2.apim.configurations.token.revocation.RealtimeNotifierTtl | int | `5000` |  |
+| wso2.apim.configurations.transactionCounter.enabled | bool | `false` |  |
+| wso2.apim.configurations.transactionCounter.serverId | string | `"Gateway"` |  |
+| wso2.apim.configurations.transactionCounter.serverUrl | string | `""` |  |
+| wso2.apim.configurations.transport.receiver.ciphers[0] | string | `"SSL_RSA_WITH_RC4_128_MD5"` |  |
+| wso2.apim.configurations.transport.receiver.ciphers[1] | string | `"SSL_RSA_WITH_RC4_128_SHA"` |  |
+| wso2.apim.configurations.transport.receiver.keystore.fileName | string | `"$ref{keystore.tls.file_name}"` |  |
+| wso2.apim.configurations.transport.receiver.keystore.password | string | `"$ref{keystore.tls.password}"` |  |
+| wso2.apim.configurations.transport.receiver.sessionTimeout | string | `""` |  |
+| wso2.apim.configurations.transport.receiver.sslEnabledProtocols[0] | string | `"TLSv1"` |  |
+| wso2.apim.configurations.transport.receiver.sslEnabledProtocols[1] | string | `"TLSv1.1"` |  |
+| wso2.apim.configurations.transport.receiver.sslEnabledProtocols[2] | string | `"TLSv1.2"` |  |
+| wso2.apim.configurations.transport.receiver.sslPort | int | `9711` |  |
+| wso2.apim.configurations.transport.receiver.sslReceiverThreadPoolSize | int | `100` |  |
+| wso2.apim.configurations.transport.receiver.tcpPort | int | `9611` |  |
+| wso2.apim.configurations.transport.receiver.tcpReceiverThreadPoolSize | int | `100` |  |
+| wso2.apim.configurations.transport.receiver.type | string | `""` |  |
+| wso2.apim.configurations.transport.receiver.workerThreads | int | `10` |  |
+| wso2.apim.configurations.userStore.properties | string | `nil` | User store properties |
+| wso2.apim.configurations.userStore.type | string | `"database_unique_id"` | User store type. https://apim.docs.wso2.com/en/latest/administer/managing-users-and-roles/managing-user-stores/configure-primary-user-store/configuring-the-primary-user-store/ |
+| wso2.apim.configurations.workflow.callbackEndpoint | string | `""` |  |
+| wso2.apim.configurations.workflow.clientRegistrationEndpoint | string | `""` |  |
+| wso2.apim.configurations.workflow.enable | bool | `false` |  |
+| wso2.apim.configurations.workflow.serviceUrl | string | `""` |  |
+| wso2.apim.configurations.workflow.tokenEndpoint | string | `""` |  |
+| wso2.apim.log4j2.appenders | string | `""` | Appenders |
+| wso2.apim.log4j2.loggers | string | `""` | Console loggers that can be enabled. Allowed values are AUDIT_LOG_CONSOLE, HTTP_ACCESS_CONSOLE, TRANSACTION_CONSOLE, CORRELATION_CONSOLE |
+| wso2.apim.mountFrontendConfig | bool | `false` | Frontend settings.json mount status |
+| wso2.apim.mountStartupScript | bool | `false` | Startup script mount status |
+| wso2.apim.portOffset | int | `0` | Port Offset for APIM deployment |
+| wso2.apim.secureVaultEnabled | bool | `false` | Secure vault enabled |
+| wso2.apim.startupArgs | string | `""` | Startup arguments for APIM |
+| wso2.apim.ulimits | object | `{"nofile":null,"nproc":null}` | ulimit settings for the APIM container. Required when running on platforms like AWS Fargate where the default nproc and nofile limits (1024) are insufficient. |
+| wso2.apim.ulimits.nofile | string | `nil` | Maximum number of open files (nofile). Set to meet WSO2 recommended requirements. |
+| wso2.apim.ulimits.nproc | string | `nil` | Maximum number of processes (nproc). Set to meet WSO2 recommended requirements. |
+| wso2.apim.version | string | `"4.7.0"` | APIM version |
+| wso2.deployment.envs | object | `{}` | Environment variables for the deployment Example:   envs:     MY_CUSTOM_VAR: "my-value"     ANOTHER_VAR: "another-value" |
+| wso2.deployment.highAvailability | bool | `false` |  |
+| wso2.deployment.image.digest | string | `""` | Docker image digest |
+| wso2.deployment.image.imagePullPolicy | string | `"Always"` | Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images) |
+| wso2.deployment.image.imagePullSecrets | object | `{"enabled":false,"name":"","password":"","username":""}` | Container registry credentials. Specify image pull secrets for private registries |
+| wso2.deployment.image.imagePullSecrets.name | string | `""` | Name of an existing image pull secret in the namespace. If set, this secret is used directly and no new secret is created. |
+| wso2.deployment.image.registry | string | `""` | Registry containing the image |
+| wso2.deployment.image.repository | string | `""` | Repository name consisting the image |
+| wso2.deployment.image.tag | string | `""` | Docker image tag |
+| wso2.deployment.lifecycle.preStopHook.sleepSeconds | int | `10` | Time to wait until the apim is terminated gracefully |
+| wso2.deployment.livenessProbe.failureThreshold | int | `5` | Minimum consecutive successes for the probe to be considered successful after having failed |
+| wso2.deployment.livenessProbe.initialDelaySeconds | int | `60` | Number of seconds after the container has started before liveness probes are initiated |
+| wso2.deployment.livenessProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |
+| wso2.deployment.minAvailable | string | `"50%"` | Minimum available pod counts for PDB |
+| wso2.deployment.nodeSelector | string | `nil` | Node selector to deploy pod in selected node. Add label to the node and specify the label here. |
+| wso2.deployment.persistence.solrIndexing | object | `{"capacity":{"carbonDatabase":"50M","solrIndexedData":"50M"},"enabled":false}` | Persistent runtime artifacts for Apache Solr-based indexing |
+| wso2.deployment.persistence.solrIndexing.capacity.carbonDatabase | string | `"50M"` | For persisting the H2 based local Carbon database file |
+| wso2.deployment.persistence.solrIndexing.capacity.solrIndexedData | string | `"50M"` | For persisting the indexed solr data |
+| wso2.deployment.persistence.solrIndexing.enabled | bool | `false` | Indicates if persistence of the runtime artifacts for Apache Solr-based indexing is enabled By default, this is disabled |
+| wso2.deployment.pod.annotations | object | `{}` | Annotations for pods |
+| wso2.deployment.readinessProbe.failureThreshold | int | `5` | Minimum consecutive successes for the probe to be considered successful after having failed |
+| wso2.deployment.readinessProbe.initialDelaySeconds | int | `60` | Number of seconds after the container has started before readiness probes are initiated |
+| wso2.deployment.readinessProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |
+| wso2.deployment.resources.jvm.memory.xms | string | `"2048m"` | JVM heap memory Xms |
+| wso2.deployment.resources.jvm.memory.xmx | string | `"2048m"` | JVM heap memory Xmx |
+| wso2.deployment.resources.limits.cpu | string | `"3000m"` | CPU limit for API Manager |
+| wso2.deployment.resources.limits.memory | string | `"3Gi"` | Memory limit for API Manager |
+| wso2.deployment.resources.requests.cpu | string | `"2000m"` | CPU request for API Manager |
+| wso2.deployment.resources.requests.memory | string | `"2Gi"` | Memory request for API Manager |
+| wso2.deployment.startupProbe.failureThreshold | int | `5` | Minimum consecutive successes for the probe to be considered successful after having failed |
+| wso2.deployment.startupProbe.initialDelaySeconds | int | `60` | Number of seconds after the container has started before startup probes are initiated |
+| wso2.deployment.startupProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |
+| wso2.moesifAnalytics | object | `{"enabled":false,"key":"YOUR_MOESIF_API_KEY_HERE","moesif_base_url":"https://api.moesif.net","send_headers":false}` | Moesif Analytics Parameters |
+| wso2.moesifAnalytics.key | string | `"YOUR_MOESIF_API_KEY_HERE"` | Moesif API key |
+| wso2.moesifAnalytics.moesif_base_url | string | `"https://api.moesif.net"` | Moesif base URL |
+| wso2.moesifAnalytics.send_headers | bool | `false` | Moesif send header |
+
+----------------------------------------------
+Autogenerated from chart metadata using [helm-docs v1.14.2](https://github.com/norwoodj/helm-docs/releases/v1.14.2)

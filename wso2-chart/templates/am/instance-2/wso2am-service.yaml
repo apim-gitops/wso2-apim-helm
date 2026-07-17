@@ -1,0 +1,55 @@
+# -------------------------------------------------------------------------------------
+#
+# Copyright (c) 2025, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
+#
+# This software is the property of WSO2 LLC. and its suppliers, if any.
+# Dissemination of any information or reproduction of any material contained 
+# herein is strictly forbidden, unless permitted by WSO2 in accordance with the 
+# WSO2 Commercial License available at https://wso2.com/licenses/eula/3.2
+#
+# --------------------------------------------------------------------------------------
+
+{{- if .Values.wso2.deployment.highAvailability }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "am-all-in-one.fullname" . }}-am-service-2
+  namespace : {{ .Release.Namespace }}
+spec:
+  # label keys and values that must match in order to receive traffic for this service
+  selector:
+    deployment: {{ template "am-all-in-one.fullname" . }}-am
+    node: {{ template "am-all-in-one.fullname" . }}-am-2
+  ports:
+    # ports that this service should serve on
+    - name: pass-through-http
+      protocol: TCP
+      port: {{ add 8280 (.Values.wso2.apim.portOffset | default 0) }}
+    - name: pass-through-https
+      protocol: TCP
+      port: {{ add 8243 (.Values.wso2.apim.portOffset | default 0) }}
+    - name: binary
+      protocol: TCP
+      port: {{ add 9611 (.Values.wso2.apim.portOffset | default 0) }}
+    - name: binary-secure
+      protocol: TCP
+      port: {{ add 9711 (.Values.wso2.apim.portOffset | default 0) }}
+    - name: jms-tcp
+      protocol: TCP
+      port: {{ add 5672 (.Values.wso2.apim.portOffset | default 0) }}
+    - name: servlet-https
+      protocol: TCP
+      port: {{ add 9443 (.Values.wso2.apim.portOffset | default 0) }}
+    - name: websub-http
+      protocol: TCP
+      port: {{ add 9021 (.Values.wso2.apim.portOffset | default 0) }}
+    - name: websub-https
+      protocol: TCP
+      port: {{ add 8021 (.Values.wso2.apim.portOffset | default 0) }}
+    - name: websocket-https
+      protocol: TCP
+      port: {{ add 8099 (.Values.wso2.apim.portOffset | default 0) }}
+    - name: websocket-http
+      protocol: TCP
+      port: {{ add 9099 (.Values.wso2.apim.portOffset | default 0) }}
+{{- end }}

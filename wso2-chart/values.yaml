@@ -756,6 +756,9 @@ wso2:
         # -- Time to wait until the apim is terminated gracefully
         sleepSeconds: 10
 
+    pod:
+      annotations: {}
+
     # -- Minimum available pod counts for PDB
     minAvailable: "50%"
 

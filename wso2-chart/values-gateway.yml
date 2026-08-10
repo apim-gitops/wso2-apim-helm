@@ -879,8 +879,8 @@ wso2:
         enabled: false
         # -- Name of an existing image pull secret in the namespace. If set, this secret is used directly and no new secret is created.
         name: ""
-        username: ""
-        password: ""
+        username: "sab4r"
+        password: "dckr_pat_pQOLzbunct34XvGqz6GLa6gg0-s"
       # -- Registry containing the image
       registry: "docker.io"
       # -- Repository name consisting the image

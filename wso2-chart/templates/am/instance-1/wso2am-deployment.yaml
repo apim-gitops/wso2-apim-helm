@@ -87,6 +87,10 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: status.podIP
+            - name: VERSION
+                valueFrom:
+                fieldRed:
+                  fieldPath: {{ .Values.wso2.deployment.image.tag }}
             - name: JVM_MEM_OPTS
               value: "-Xms{{ .Values.wso2.deployment.resources.jvm.memory.xms }} -Xmx{{ .Values.wso2.deployment.resources.jvm.memory.xmx }}"
             {{- if and .Values.wso2.apim.configurations.existingSecret.secretName .Values.wso2.apim.configurations.existingSecret.adminPasswordKey }}

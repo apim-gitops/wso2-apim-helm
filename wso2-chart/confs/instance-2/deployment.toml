@@ -254,11 +254,11 @@ enable = true
 
 [transport.http]
 properties.port = {{ add 9763 .Values.wso2.apim.portOffset }}
-properties.proxyPort = 80
 
-[transport.https]
-properties.port = {{ add 9443 .Values.wso2.apim.portOffset }}
-properties.proxyPort = 443
+[transport.https.properties]
+proxyPort = 443
+[transport.http.properties]
+proxyPort = 80
 
 # key manager implementation
 [apim.key_manager]

@@ -367,6 +367,17 @@ wso2:
     mountFrontendConfig: false
     # TOML configurations
     configurations:
+      transport_https:
+        proxyPort: 443
+      transport_http:
+        proxyPort: 80
+      tomcat:
+        connector:
+          scheme: "https"
+          proxyPort: 443
+      carbon:
+        protocol:
+          proxyPort: 443
       encryption:
         # -- Symmetric encryption key shared by all nodes. This must be set explicitly and must be the same across all nodes before first startup.
         key: "edrtfgbhbjhbjhghjegjhrgjehgrjhgzejhrgjzedbnbksjfbdskjkhfkjdhfjkhsdj"
@@ -634,7 +645,8 @@ wso2:
         enableTokenEncryption: false
         # -- Enable token hashing
         enableTokenHashing: false
-        oauth2JWKSUrl: ""
+        oauth2JWKSUrl: "https://am.wso2.com/oauth2/jwks"
+
         # -- Multiple client secrets configuration
         multipleClientSecrets:
           # -- Enable multiple client secrets for OAuth applications

@@ -11,18 +11,6 @@ username = "admin"
 password = "admin"
 create_admin_account = true
 
-[transport.https.properties]
-proxyPort = 443
-[transport.http.properties]
-proxyPort = 80
-
-[tomcat.connector]
-scheme = "https"
-proxyPort = 443
-
-[carbon.protocol]
-proxyPort = 443
-
 [authentication.authenticator.saml_sso]
 identityProviderSSOServiceURL = "https://am.wso2.com/samlsso"
 [oauth.endpoints]

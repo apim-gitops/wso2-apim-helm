@@ -11,6 +11,24 @@ username = "admin"
 password = "admin"
 create_admin_account = true
 
+[transport.https.properties]
+proxyPort = 443
+[transport.http.properties]
+proxyPort = 80
+
+[tomcat.connector]
+scheme = "https"
+proxyPort = 443
+
+[carbon.protocol]
+proxyPort = 443
+
+[authentication.authenticator.saml_sso]
+identityProviderSSOServiceURL = "https://am.wso2.com/samlsso"
+[oauth.endpoints]
+oauth2_token_url = "https://am.wso2.com/oauth2/token"
+oauth2_authorize_url = "https://am.wso2.com/oauth2/authorize"
+
 [user_store]
 type = "database_unique_id"
 
@@ -149,6 +167,7 @@ enable_lightweight_apikey_generation = true
 #revoke_endpoint = "https://localhost:${https.nio.port}/revoke"
 #enable_token_encryption = false
 #enable_token_hashing = false
+oauth2JWKSUrl = "https://am.wso2.com/oauth2/jwks"
 
 #[apim.devportal]
 #url = "https://localhost:${mgt.transport.https.port}/devportal"

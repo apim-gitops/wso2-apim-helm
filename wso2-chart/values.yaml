@@ -879,7 +879,7 @@ wso2:
       # -- Repository name consisting the image
       repository: "wso2/wso2am"
       # -- Docker image tag
-      tag: 4.7.0_0.4.0-SNAPSHOT-b8c8a938c
+      tag: 4.7.0_0.4.0-SNAPSHOT-b0e6c6c4d
       # -- Docker image digest
       digest: "sha256:4de3aabbb11d16a1c00d122312503070ea8617e0829133cbcc83f35d6868b889"
       # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)

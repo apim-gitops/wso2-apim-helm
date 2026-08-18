@@ -888,8 +888,6 @@ wso2:
       repository: "sab4r/wso2am-custom"
       # -- Docker image tag
       tag: 4.7.0_0.4.0-SNAPSHOT-b09ca567a
-      # -- Docker image digest
-      digest: "sha256:844085885b12e6c02ce9a5096b1107ad0c16ff6cb3ec00177ef84e32812888cd"
       # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
       imagePullPolicy: IfNotPresent
 

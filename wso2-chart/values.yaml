@@ -306,7 +306,7 @@ kubernetes:
         name: "WSO2_CP_STICKY_SESSION"
         # -- Cookie TTL. Use "0s" for a session cookie (expires when browser closes)
         ttl: "0s"
-    
+
   securityContext:
     # -- User ID of the container
     runAsUser: 10001
@@ -324,7 +324,7 @@ kubernetes:
   configMaps:
     scripts:
       defaultMode: "0407"
-  
+
   # -- Mount extra volumes to the deployment pods, e.g to mount secrets
   # extraVolumeMounts:
   #   - name: my-secret
@@ -392,7 +392,7 @@ wso2:
       # -- Read passwords from a common secret
       existingSecret:
         secretName: "" # e.g apim-secret
-        adminPasswordKey: ""  # e.g adminPassword
+        adminPasswordKey: "" # e.g adminPassword
         apimDBPasswordKey: "" # e.g apimDBPassword
         sharedDBPasswordKey: "" # e.g sharedDBPassword
         encryptionKeyKey: "" # e.g encryptionKey
@@ -529,19 +529,19 @@ wso2:
       gateway:
         # -- APIM Gateway environments
         environments:
-        - name: "Default"
-          type: "hybrid"
-          gatewayType: "Regular"
-          provider: "wso2"
-          visibility:
-          displayInApiConsole: true
-          description: "This is a hybrid gateway that handles both production and sandbox token traffic."
-          showAsTokenEndpointUrl: true
-          serviceName: "wso2am-gateway-service"
-          servicePort: 9443
-          wsHostname: "websocket.wso2.com"
-          httpHostname: "gw.wso2.com"
-          websubHostname: "websub.wso2.com"
+          - name: "Default"
+            type: "hybrid"
+            gatewayType: "Regular"
+            provider: "wso2"
+            visibility:
+            displayInApiConsole: true
+            description: "This is a hybrid gateway that handles both production and sandbox token traffic."
+            showAsTokenEndpointUrl: true
+            serviceName: "wso2am-gateway-service"
+            servicePort: 9443
+            wsHostname: "websocket.wso2.com"
+            httpHostname: "gw.wso2.com"
+            websubHostname: "websub.wso2.com"
 
       gatewayNotification:
         enabled: true
@@ -657,7 +657,7 @@ wso2:
           secretCount: ""
         # -- Enable OAuth token persistence optimization. When enabled, JWT extension is used. When disabled, token persistence and revoked token headers configuration is used.
         tokenPersistenceOptimization: true
-      
+
       # APIM Open Tracing configurations
       # https://apim.docs.wso2.com/en/latest/observe/api-manager/traces/monitoring-with-opentracing/
       openTracer:
@@ -707,7 +707,6 @@ wso2:
         enableKeyProvisioning:
         enableLegacyApiKeys: false
 
-
       publisher:
         # -- Supported document types in Publisher.
         # This should be used only if there are additional document types to be supported.
@@ -723,9 +722,17 @@ wso2:
         # -- CORS Access-Control-Allow-Origin
         allowOrigins: ["*"]
         # -- CORS Access-Control-Allow-Methods
-        allowMethods: ["GET","PUT","POST","DELETE","PATCH","OPTIONS"]
+        allowMethods: ["GET", "PUT", "POST", "DELETE", "PATCH", "OPTIONS"]
         # -- CORS Access-Control-Allow-Headers
-        allowHeaders: ["authorization","Access-Control-Allow-Origin","Content-Type","SOAPAction","apikey","Internal-Key"]
+        allowHeaders:
+          [
+            "authorization",
+            "Access-Control-Allow-Origin",
+            "Content-Type",
+            "SOAPAction",
+            "apikey",
+            "Internal-Key",
+          ]
         # -- CORS Access-Control-Allow-Credentials
         allowCredentials: false
         # -- Enable CORS for Websockets
@@ -838,7 +845,22 @@ wso2:
 
       # APIM SDK configurations
       sdk:
-        supportedLanguages: ["android", "java", "csharp", "dart", "groovy", "javascript", "jmeter", "perl", "php", "python", "ruby", "swift5", "clojure"]
+        supportedLanguages:
+          [
+            "android",
+            "java",
+            "csharp",
+            "dart",
+            "groovy",
+            "javascript",
+            "jmeter",
+            "perl",
+            "php",
+            "python",
+            "ruby",
+            "swift5",
+            "clojure",
+          ]
 
       # Organization level access control configurations
       organization_based_access_control:
@@ -881,7 +903,6 @@ wso2:
       # -- Docker image tag
       tag: 4.7.0_0.4.0-SNAPSHOT-b09ca567a
       # -- Docker image digest
-      digest: "sha256:4de3aabbb11d16a1c00d122312503070ea8617e0829133cbcc83f35d6868b889"
       # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
       imagePullPolicy: IfNotPresent
 
@@ -965,4 +986,3 @@ wso2:
           carbonDatabase: 50M
           # -- For persisting the indexed solr data
           solrIndexedData: 50M
-

@@ -1,6 +1,6 @@
 # -------------------------------------------------------------------------------------
 #
-# Copyright (c) 2023, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
+# Copyright (c) 2025, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
 #
 # This software is the property of WSO2 LLC. and its suppliers, if any.
 # Dissemination of any information or reproduction of any material contained
@@ -151,10 +151,8 @@ gcp:
   automountServiceAccountToken: true
 
 kubernetes:
-  # -- When deploying on OpenShift.
   openshift:
     enabled: false
-
   # -- Ingress class to be used for the ingress resource
   ingressClass: "nginx"
   ingress:
@@ -199,7 +197,7 @@ kubernetes:
       hostname: "websub.wso2.com"
       # -- Ingress annotations for Websub
       annotations:
-  # -- OpenShift Route configurations
+
   route:
     # -- TLS configuration for OpenShift routes
     tls:
@@ -249,12 +247,12 @@ kubernetes:
   # See resources/assets/sample-gateway.yaml for an example Gateway manifest
   gatewayAPI:
     # -- Enable Gateway API resources (HTTPRoutes and policies)
-    enabled: false
-    # -- Name of the externally-created Gateway resource that HTTPRoutes will reference (e.g., istio, nginx, contour, envoy-gateway, gke-l7-global-external-managed)
+    enabled: true
+    # -- Name of the externally-created Gateway resource that HTTPRoutes will reference
     # This Gateway must exist in the same namespace before installing the chart
-    gatewayName: ""
+    gatewayName: "wso2-apim-gateway"
     # -- Create CA certificate ConfigMap for BackendTLSPolicy
-    defaultConfigMapCreation: false
+    defaultConfigMapCreation: true
     management:
       # -- Enable HTTPRoute for Management Console, Publisher, DevPortal and Admin Portal
       enabled: true
@@ -293,20 +291,20 @@ kubernetes:
     # -- Backend TLS Policy for HTTPS backend connections
     backendTLSPolicy:
       # -- Enable BackendTLSPolicy
-      enabled: false
+      enabled: true
       # -- CA certificate ConfigMap name for backend TLS verification
-      caCertificateConfigMap: ""
+      # This ConfigMap is created by the chart when defaultConfigMapCreation is true
+      caCertificateConfigMap: "wso2-ca-cert"
       # -- Backend hostname for TLS verification
-      hostname: ""
+      hostname: "localhost"
     backendTrafficPolicy:
       # -- Enable BackendTrafficPolicy
-      enabled: false
+      enabled: true
       cookie:
         # -- Cookie name used for sticky sessions
         name: "WSO2_CP_STICKY_SESSION"
         # -- Cookie TTL. Use "0s" for a session cookie (expires when browser closes)
         ttl: "0s"
-
   securityContext:
     # -- User ID of the container
     runAsUser: 10001
@@ -324,19 +322,6 @@ kubernetes:
   configMaps:
     scripts:
       defaultMode: "0407"
-
-  # -- Mount extra volumes to the deployment pods, e.g to mount secrets
-  # extraVolumeMounts:
-  #   - name: my-secret
-  #     mountPath: /opt/wso2/secrets
-  #     readOnly: true
-  extraVolumeMounts: []
-  # -- Define the extra volumes to be mounted
-  # extraVolumes:
-  #   - name: my-secret
-  #     secret:
-  #       secretName: my-k8s-secret
-  extraVolumes: []
 
 wso2:
   # -- ELK Analytics Parameters
@@ -538,10 +523,11 @@ wso2:
             description: "This is a hybrid gateway that handles both production and sandbox token traffic."
             showAsTokenEndpointUrl: true
             serviceName: "wso2am-gateway-service"
-            servicePort: 9443
+            servicePort: 443
             wsHostname: "websocket.wso2.com"
             httpHostname: "gw.wso2.com"
             websubHostname: "websub.wso2.com"
+            amHostname: "am.wso2.com"
 
       gatewayNotification:
         enabled: true
@@ -894,15 +880,14 @@ wso2:
         enabled: false
         # -- Name of an existing image pull secret in the namespace. If set, this secret is used directly and no new secret is created.
         name: ""
-        username: ""
-        password: ""
+        username: "changeme"
+        password: "changeme"
       # -- Registry containing the image
       registry: "docker.io"
       # -- Repository name consisting the image
-      repository: "wso2/wso2am"
+      repository: "changeme"
       # -- Docker image tag
       tag: 4.7.0_0.4.0-SNAPSHOT-b09ca567a
-      # -- Docker image digest
       # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
       imagePullPolicy: IfNotPresent
 
